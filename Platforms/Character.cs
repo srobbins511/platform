@@ -68,13 +68,13 @@ namespace Platforms
         //Draw the Character to the screen
         public void Draw()
         {
-            spriteBatch.Draw(leftArm, new Vector2(X + 27, Y + 39), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 1);
-            spriteBatch.Draw(leftHand, new Vector2(X + 27, Y + 45), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 1);
-            spriteBatch.Draw(leftLeg, new Vector2(X + 23, Y + 51), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 1);
-            spriteBatch.Draw(rightLeg, new Vector2(X + 17, Y + 51), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 1);
-            spriteBatch.Draw(body, new Vector2(X + 8, Y + 32), null, Color.White, 0, new Vector2(0,0), .1f, SpriteEffects.None, 1);
-            spriteBatch.Draw(rightArm, new Vector2(X + 11, Y + 39), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 1);
-            spriteBatch.Draw(rightHand, new Vector2(X + 11, Y + 45), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 1);
+            spriteBatch.Draw(leftArm, new Vector2(X + 27, Y + 39), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+            spriteBatch.Draw(leftHand, new Vector2(X + 27, Y + 45), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+            spriteBatch.Draw(leftLeg, new Vector2(X + 23, Y + 51), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+            spriteBatch.Draw(rightLeg, new Vector2(X + 17, Y + 51), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+            spriteBatch.Draw(body, new Vector2(X + 8, Y + 32), null, Color.White, 0, new Vector2(0,0), .1f, SpriteEffects.None, 0);
+            spriteBatch.Draw(rightArm, new Vector2(X + 11, Y + 39), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+            spriteBatch.Draw(rightHand, new Vector2(X + 11, Y + 45), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
             spriteBatch.Draw(head, new Vector2(X, Y), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
             spriteBatch.Draw(face1, new Vector2(X+13, Y+19), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
         }
