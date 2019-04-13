@@ -18,6 +18,7 @@ namespace Platforms
         private int charY;
         private int screenWidth;
         private int screenHeight;
+        private KeyboardState prevKeyboardState;
 
         public Game1()
         {
@@ -85,10 +86,37 @@ namespace Platforms
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
+            KeyboardState currentKeyboardState = Keyboard.GetState();
+            if(currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.A))
+            {
+                if (currentKeyboardState.IsKeyDown(Keys.D))
+                {
+                    character.MovingRight();
+                }
+                else if (currentKeyboardState.IsKeyDown(Keys.A))
+                {
+                    character.MovingLeft();
+                }
+                character.Move();
+                prevKeyboardState = currentKeyboardState;
+            }
+            
+            if(prevKeyboardState.IsKeyDown(Keys.D) || prevKeyboardState.IsKeyDown(Keys.A))
+            {
+                if(currentKeyboardState.IsKeyUp(Keys.D) && currentKeyboardState.IsKeyUp(Keys.A)) 
+                {
+                    character.ResetVectorX();
+                    character.Move();
+                }
+                
+            }
+
+
 
             base.Update(gameTime);
         }

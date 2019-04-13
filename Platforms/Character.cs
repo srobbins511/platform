@@ -16,8 +16,8 @@ namespace Platforms
         public float Y { get; set; }
         public float Width { get; set; }
         public float Height { get; set; }
-        public float xVector { get; set; }
-        public float yVector { get; set; }
+        public double xVector { get; set; }
+        public double yVector { get; set; }
         public static float distance { get; set; }
         public float screenWidth;
 
@@ -37,7 +37,7 @@ namespace Platforms
         private SpriteBatch spriteBatch;
         private static float JumpHeight = -20;
         private static float Gravity = 10;
-        private static float MovementSpeed = 20;
+        private static float MovementSpeed = 10;
 
         //initailize all the character data
         public Character(GameContent gameContent, SpriteBatch spriteBatch, float x, float y, float screenWidth)
@@ -85,7 +85,7 @@ namespace Platforms
         {
             if(xVector> -MovementSpeed)
             {
-                xVector += -2;
+                xVector += -.2;
             } 
         }
         //Same as for left movement but for right
@@ -93,7 +93,7 @@ namespace Platforms
         {
             if(xVector<MovementSpeed)
             {
-                xVector += 2;
+                xVector += .2;
             }
         }
         //Use the vectors to move the character on the x axis
@@ -101,23 +101,30 @@ namespace Platforms
         {
             if(X>0 && X<screenWidth)
             {
-                X += xVector;
+                X += (float)xVector;
             }
         }
 
         //Alter the vector values when they are not in use so they return to their default states
-        public void ResetVectors()
+        public void ResetVectorX()
         {
             if(xVector > -1 && xVector < 1)
             {
                 xVector = 0;
             }
-            else
+            else if(xVector >1)
             {
-                xVector = xVector / 2;
+                xVector = xVector -.5;
             }
+            else if (xVector < -1)
+            {
+                xVector = xVector + .5;
+            }
+        }
 
-            if(yVector < Gravity)
+        public void ResetVectorY()
+        {
+            if (yVector < Gravity)
             {
                 yVector += 2;
             }
