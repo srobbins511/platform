@@ -22,6 +22,7 @@ namespace Platforms
         public float screenWidth;
 
         private Texture2D body { get; set; }
+
         private Texture2D head { get; set; }
         private Texture2D face1 { get; set; }
         private Texture2D face2 { get; set; }

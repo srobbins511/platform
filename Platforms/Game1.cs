@@ -13,6 +13,7 @@ namespace Platforms
         SpriteBatch spriteBatch;
         GameContent gameContent;
         private Character character;
+        private Floor floor;
         private int charX;
         private int charY;
         private int screenWidth;
@@ -50,9 +51,22 @@ namespace Platforms
             gameContent = new GameContent(Content);
             screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            if(screenWidth >= 1080)
+            {
+                screenWidth = 1080;
+            }
+            if(screenHeight >= 720)
+            {
+                screenHeight = 720;
+            }
+
+            graphics.PreferredBackBufferWidth = screenWidth;
+            graphics.PreferredBackBufferHeight = screenHeight;
+            graphics.ApplyChanges();
             charX = 300;
             charY = 300;
             character = new Character(gameContent, spriteBatch, charX, charY, screenWidth);
+            floor = new Floor(gameContent, spriteBatch, screenWidth, screenHeight);
         }
 
         /// <summary>
@@ -90,6 +104,7 @@ namespace Platforms
             // TODO: Add your drawing code here
 
             spriteBatch.Begin();
+            floor.Draw();
             character.Draw();
             spriteBatch.End();
 
