@@ -12,6 +12,11 @@ namespace Platforms
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         GameContent gameContent;
+        private Character character;
+        private int charX;
+        private int charY;
+        private int screenWidth;
+        private int screenHeight;
 
         public Game1()
         {
@@ -43,6 +48,11 @@ namespace Platforms
 
             // TODO: use this.Content to load your game content here
             gameContent = new GameContent(Content);
+            screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            charX = 300;
+            charY = 300;
+            character = new Character(gameContent, spriteBatch, charX, charY, screenWidth);
         }
 
         /// <summary>
@@ -78,6 +88,10 @@ namespace Platforms
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
+
+            spriteBatch.Begin();
+            character.Draw();
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
