@@ -40,7 +40,7 @@ namespace Platforms
             rightLeg = Content.Load<Texture2D>("RightLeg");
             rightHand = Content.Load<Texture2D>("RightHand");
             labelFont = Content.Load<SpriteFont>("Arial20");
-            landTile = Content.Load<Texture2D>("land_2");
+            landTile = Content.Load<Texture2D>("bg");
         }
     }
 }

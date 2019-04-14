@@ -20,6 +20,7 @@ namespace Platforms
         public double yVector { get; set; }
         public static float distance { get; set; }
         public float screenWidth;
+        public float screenHeight;
 
         private Texture2D body { get; set; }
 
@@ -35,12 +36,14 @@ namespace Platforms
         private Texture2D rightHand { get; set; }
 
         private SpriteBatch spriteBatch;
-        private static float JumpHeight = -20;
+        private static float JumpHeight = -200;
         private static float Gravity = 10;
-        private static float MovementSpeed = 10;
+        private static float MovementSpeed = 5;
+        private bool Jumped = false;
+        private bool canJump = false;
 
         //initailize all the character data
-        public Character(GameContent gameContent, SpriteBatch spriteBatch, float x, float y, float screenWidth)
+        public Character(GameContent gameContent, SpriteBatch spriteBatch, float x, float y, float screenWidth, float screenHeight)
         {
             this.head = gameContent.head;
             this.body = gameContent.body;
@@ -53,15 +56,17 @@ namespace Platforms
             this.rightArm = gameContent.rightArm;
             this.rightHand = gameContent.rightHand;
             this.rightLeg = gameContent.rightLeg;
+            
 
             Width = body.Width + leftArm.Width + rightArm.Width;
             Height = body.Height + leftLeg.Height + head.Height;
             this.screenWidth= screenWidth;
+            this.screenHeight = screenHeight;
 
             this.X = x;
             this.Y = y;
             this.xVector = 0;
-            this.yVector = 10;
+            this.yVector = 0;
             this.spriteBatch = spriteBatch;
         }
 
@@ -97,28 +102,52 @@ namespace Platforms
             }
         }
         //Use the vectors to move the character on the x axis
-        public void Move()
+        public void Move(Floor floor)
         {
-            if(X>0 && X<screenWidth)
+            Rectangle charRect = new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
+            if (X>=0 && X<screenWidth)
             {
                 X += (float)xVector;
             }
+            if (colTest(charRect, floor))
+            {
+               Y = floor.Y - 45;
+                canJump = true;
+            }
+            else
+            {
+                Y = Y + (float)yVector;
+            }
+            if (Jumped)
+            {
+                Y = Y + (float)yVector;
+                Jumped = false;
+            }
+            
+            
         }
 
+        public Boolean colTest(Rectangle r1, Floor floor)
+        {
+            foreach(Land l in floor.floor)
+            {
+                if (Rectangle.Intersect(r1, l.rect) != Rectangle.Empty)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         //Alter the vector values when they are not in use so they return to their default states
         public void ResetVectorX()
         {
-            if(xVector > -1 && xVector < 1)
+            if(xVector > -.4 && xVector < .4)
             {
                 xVector = 0;
             }
-            else if(xVector >1)
+            else 
             {
-                xVector = xVector -.5;
-            }
-            else if (xVector < -1)
-            {
-                xVector = xVector + .5;
+                xVector = xVector* .7;
             }
         }
 
@@ -126,9 +155,9 @@ namespace Platforms
         {
             if (yVector < Gravity)
             {
-                yVector += 2;
+                yVector += .5;
             }
-            else
+            else if (yVector > Gravity)
             {
                 yVector = Gravity;
             }
@@ -137,9 +166,11 @@ namespace Platforms
         //set the yVector to create upward movement for the character
         public void Jump()
         {
-            if(yVector == Gravity)
+            if(canJump)
             {
-                yVector = JumpHeight;
+                yVector = JumpHeight/2;
+                Jumped = true;
+                canJump = false;
             }
         }
     }

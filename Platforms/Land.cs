@@ -20,6 +20,7 @@ namespace Platforms
         private SpriteBatch spriteBatch;
         private float X { get; set; }
         private float Y { get; set; }
+        public Rectangle rect;
 
         public Land(GameContent gameContent, SpriteBatch spriteBatch, float screenWidth, float screenHeight, float x, float y)
         {
@@ -31,11 +32,12 @@ namespace Platforms
             Width = land.Width;
             X = x;
             Y = y;
+            rect = new Rectangle((int)X,(int) Y, land.Width, land.Height);
         }
 
         public void Draw()
         {
-            spriteBatch.Draw(land, new Vector2(X, Y), null, Color.White, 0, new Vector2(0, 0), 1f, SpriteEffects.None, 0);
+            spriteBatch.Draw(land, new Vector2(X, Y), null, Color.White, 0, new Vector2(0, 0), 1f, SpriteEffects.None, 1);
         }
     }
 }

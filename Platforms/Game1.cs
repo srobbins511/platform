@@ -19,6 +19,7 @@ namespace Platforms
         private int screenWidth;
         private int screenHeight;
         private KeyboardState prevKeyboardState;
+        private GameTime gameTime;
 
         public Game1()
         {
@@ -66,7 +67,7 @@ namespace Platforms
             graphics.ApplyChanges();
             charX = 300;
             charY = 300;
-            character = new Character(gameContent, spriteBatch, charX, charY, screenWidth);
+            character = new Character(gameContent, spriteBatch, charX, charY, screenWidth, screenHeight);
             floor = new Floor(gameContent, spriteBatch, screenWidth, screenHeight);
         }
 
@@ -102,22 +103,27 @@ namespace Platforms
                 {
                     character.MovingLeft();
                 }
-                character.Move();
-                prevKeyboardState = currentKeyboardState;
-            }
-            
-            if(prevKeyboardState.IsKeyDown(Keys.D) || prevKeyboardState.IsKeyDown(Keys.A))
-            {
-                if(currentKeyboardState.IsKeyUp(Keys.D) && currentKeyboardState.IsKeyUp(Keys.A)) 
-                {
-                    character.ResetVectorX();
-                    character.Move();
-                }
                 
             }
+            if (currentKeyboardState.IsKeyDown(Keys.Space) && prevKeyboardState.IsKeyDown(Keys.Space))
+            {
+                character.Jump();
+            }
+            
+            if (prevKeyboardState.IsKeyDown(Keys.D) || prevKeyboardState.IsKeyDown(Keys.A))
+            {
+                character.Move(floor);
+            }
+            else if(currentKeyboardState.IsKeyUp(Keys.D) && currentKeyboardState.IsKeyUp(Keys.A))
+            {
+                character.ResetVectorX();
+                character.ResetVectorY();
+                character.Move(floor);
+            }
 
 
 
+            prevKeyboardState = currentKeyboardState;
             base.Update(gameTime);
         }
 
@@ -127,7 +133,7 @@ namespace Platforms
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
 
