@@ -15,6 +15,7 @@ namespace Platforms
         private Character character;
         private Floor floor;
         private Level level;
+        private Level level2;
         private int charX;
         private int charY;
         private int screenWidth;
@@ -70,7 +71,7 @@ namespace Platforms
             charY = 300;
             character = new Character(gameContent, spriteBatch, charX, charY, screenWidth, screenHeight);
             floor = new Floor(gameContent, spriteBatch, screenWidth, screenHeight);
-            level = new Level(gameContent, spriteBatch, screenWidth, screenHeight);
+            level = new Level(gameContent, spriteBatch, screenWidth, screenHeight, floor);
         }
 
         /// <summary>
@@ -98,6 +99,11 @@ namespace Platforms
             {
                 Exit();
             }
+            if(character.WinLevel)
+            {
+                Exit();
+            }
+            
             KeyboardState currentKeyboardState = Keyboard.GetState();
             if(currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.A))
             {
@@ -134,6 +140,14 @@ namespace Platforms
             {
                 t.X = t.X - 1;
                 t.rect = new Rectangle((int)t.X, (int)t.Y, (int)t.Width, (int)t.Height);
+            }
+            if(character.resetFloor)
+            {
+                foreach (Land l in floor.floor)
+                {
+                    l.X = level.level[level.platformNumber-1].X;
+                    l.rect = new Rectangle((int)l.X, (int)l.Y, (int)l.Width, (int)l.Height);
+                }
             }
             character.X -= 1;
             prevKeyboardState = currentKeyboardState;

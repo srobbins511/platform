@@ -23,6 +23,7 @@ namespace Platforms
         public float screenWidth;
         public float screenHeight;
         public bool stable { get; set; }
+        public bool WinLevel { get; set; }
 
         private Texture2D body { get; set; }
 
@@ -36,6 +37,7 @@ namespace Platforms
         private Texture2D rightArm { get; set; }
         private Texture2D rightLeg { get; set; }
         private Texture2D rightHand { get; set; }
+        public bool resetFloor { get; set; }
 
         private SpriteBatch spriteBatch;
         private static float JumpHeight = -20;
@@ -70,6 +72,7 @@ namespace Platforms
             this.yVector = 0;
             this.spriteBatch = spriteBatch;
             distance = x;
+            WinLevel = false;
         }
 
 
@@ -107,8 +110,13 @@ namespace Platforms
         public void Move(Floor floor, Level level)
         {
             float prevX = X;
-            Rectangle charRect = new Rectangle((int)X, (int)(Y+Height-1), (int)Width, 1);
-            if (X > 5 && X < screenWidth - xVector)
+            Rectangle charRect = new Rectangle((int)X, (int)(Y + Height - 1), (int)Width, 1);
+            if(X<=0)
+            {
+                xVector += 20;
+                Jump();
+            }
+            if ( X < screenWidth - xVector)
             {
                 X += (float)xVector;
                 distance = (float)xVector;
@@ -165,6 +173,11 @@ namespace Platforms
             {
                 if (Rectangle.Intersect(r1, l.rect) != Rectangle.Empty)
                 {
+                    if(resetFloor)
+                    {
+                        WinLevel = true;
+                        resetFloor = false;
+                    }
                     return true;
                 }
             }
@@ -173,10 +186,16 @@ namespace Platforms
 
         public Boolean colTest(Rectangle r1, Level level)
         {
+            int count = 0;
             foreach (Tile t in level.level)
             {
+                count++;
                 if (Rectangle.Intersect(r1, t.rect) != Rectangle.Empty)
                 {
+                    if(count>0)
+                    {
+                        resetFloor = true;
+                    }
                     tileY = (int)t.Y;
                     return true;
                 }
