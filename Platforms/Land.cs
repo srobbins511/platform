@@ -18,8 +18,8 @@ namespace Platforms
         public float Height { get; }
         public float Width { get; }
         private SpriteBatch spriteBatch;
-        private float X { get; set; }
-        private float Y { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
         public Rectangle rect;
 
         public Land(GameContent gameContent, SpriteBatch spriteBatch, float screenWidth, float screenHeight, float x, float y)

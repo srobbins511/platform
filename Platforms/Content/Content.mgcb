@@ -128,6 +128,18 @@
 /processorParam:TextureFormat=Color
 /build:LeftLeg.png
 
+#begin Pad1Sized.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Pad1Sized.png
+
 #begin RightArm.png
 /importer:TextureImporter
 /processor:TextureProcessor

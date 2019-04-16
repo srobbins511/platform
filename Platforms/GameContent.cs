@@ -25,6 +25,7 @@ namespace Platforms
         public Texture2D rightHand { get; set; }
         public SpriteFont labelFont { get; set; }
         public Texture2D landTile { get; set; }
+        public Texture2D JumpTile { get; set; }
 
         public GameContent(ContentManager Content)
         {
@@ -41,6 +42,7 @@ namespace Platforms
             rightHand = Content.Load<Texture2D>("RightHand");
             labelFont = Content.Load<SpriteFont>("Arial20");
             landTile = Content.Load<Texture2D>("bg");
+            JumpTile = Content.Load<Texture2D>("Pad1Sized");
         }
     }
 }

@@ -12,15 +12,17 @@ namespace Platforms
 {
     class Character
     {
+        public int tileY;
         public float X { get; set; }
         public float Y { get; set; }
         public float Width { get; set; }
         public float Height { get; set; }
         public double xVector { get; set; }
         public double yVector { get; set; }
-        public static float distance { get; set; }
+        public float distance { get; set; }
         public float screenWidth;
         public float screenHeight;
+        public bool stable { get; set; }
 
         private Texture2D body { get; set; }
 
@@ -36,7 +38,7 @@ namespace Platforms
         private Texture2D rightHand { get; set; }
 
         private SpriteBatch spriteBatch;
-        private static float JumpHeight = -200;
+        private static float JumpHeight = -20;
         private static float Gravity = 10;
         private static float MovementSpeed = 5;
         private bool Jumped = false;
@@ -56,10 +58,10 @@ namespace Platforms
             this.rightArm = gameContent.rightArm;
             this.rightHand = gameContent.rightHand;
             this.rightLeg = gameContent.rightLeg;
-            
 
-            Width = body.Width + leftArm.Width + rightArm.Width;
-            Height = body.Height + leftLeg.Height + head.Height;
+            stable = false;
+            Width = 30;
+            Height = 55;
             this.screenWidth= screenWidth;
             this.screenHeight = screenHeight;
 
@@ -68,6 +70,7 @@ namespace Platforms
             this.xVector = 0;
             this.yVector = 0;
             this.spriteBatch = spriteBatch;
+            distance = x;
         }
 
 
@@ -102,20 +105,29 @@ namespace Platforms
             }
         }
         //Use the vectors to move the character on the x axis
-        public void Move(Floor floor)
+        public void Move(Floor floor, Level level)
         {
+            float prevX = X;
             Rectangle charRect = new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
-            if (X>=0 && X<screenWidth)
+            if (X > 0 && X < screenWidth - xVector)
             {
                 X += (float)xVector;
+                distance = (float)xVector;
             }
-            if (colTest(charRect, floor))
+            if (colTest(charRect, level))
             {
-               Y = floor.Y - 45;
+                Y = tileY - 55;
+                
+                canJump = true;
+            }
+            else if (colTest(charRect, floor))
+            {
+                Y = floor.Y - 45;
                 canJump = true;
             }
             else
             {
+                stable = false;
                 Y = Y + (float)yVector;
             }
             if (Jumped)
@@ -123,8 +135,20 @@ namespace Platforms
                 Y = Y + (float)yVector;
                 Jumped = false;
             }
-            
-            
+            if(prevX < X)
+            {
+                foreach (Land l in floor.floor)
+                {
+                    l.X = l.X - distance;
+                    l.rect = new Rectangle((int)l.X, (int)l.Y,(int) l.Width,(int)l.Height);
+                }
+                foreach (Tile t in level.level)
+                {
+                    t.X = t.X - distance;
+                    t.rect = new Rectangle((int)t.X, (int)t.Y, (int)t.Width, (int)t.Height);
+                }
+            }
+           
         }
 
         public Boolean colTest(Rectangle r1, Floor floor)
@@ -133,6 +157,21 @@ namespace Platforms
             {
                 if (Rectangle.Intersect(r1, l.rect) != Rectangle.Empty)
                 {
+                    stable = true;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public Boolean colTest(Rectangle r1, Level level)
+        {
+            foreach (Tile t in level.level)
+            {
+                if (Rectangle.Intersect(r1, t.rect) != Rectangle.Empty)
+                {
+                    stable = true;
+                    tileY = (int)t.Y;
                     return true;
                 }
             }

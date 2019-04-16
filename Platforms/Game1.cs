@@ -14,6 +14,7 @@ namespace Platforms
         GameContent gameContent;
         private Character character;
         private Floor floor;
+        private Level level;
         private int charX;
         private int charY;
         private int screenWidth;
@@ -69,6 +70,7 @@ namespace Platforms
             charY = 300;
             character = new Character(gameContent, spriteBatch, charX, charY, screenWidth, screenHeight);
             floor = new Floor(gameContent, spriteBatch, screenWidth, screenHeight);
+            level = new Level(gameContent, spriteBatch, screenWidth, screenHeight);
         }
 
         /// <summary>
@@ -92,6 +94,10 @@ namespace Platforms
                 Exit();
 
             // TODO: Add your update logic here
+            if(character.Y>screenHeight)
+            {
+                Exit();
+            }
             KeyboardState currentKeyboardState = Keyboard.GetState();
             if(currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.A))
             {
@@ -109,20 +115,24 @@ namespace Platforms
             {
                 character.Jump();
             }
-            
-            if (prevKeyboardState.IsKeyDown(Keys.D) || prevKeyboardState.IsKeyDown(Keys.A))
-            {
-                character.Move(floor);
-            }
-            else if(currentKeyboardState.IsKeyUp(Keys.D) && currentKeyboardState.IsKeyUp(Keys.A))
+            if(!(currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.A)))
             {
                 character.ResetVectorX();
-                character.ResetVectorY();
-                character.Move(floor);
             }
+            character.Move(floor, level);
+            character.ResetVectorY();
 
-
-
+            foreach (Land l in floor.floor)
+            {
+                l.X = l.X - 1;
+                l.rect = new Rectangle((int)l.X, (int)l.Y, (int)l.Width, (int)l.Height);
+            }
+            foreach (Tile t in level.level)
+            {
+                t.X = t.X - 1;
+                t.rect = new Rectangle((int)t.X, (int)t.Y, (int)t.Width, (int)t.Height);
+            }
+            character.X -= 1;
             prevKeyboardState = currentKeyboardState;
             base.Update(gameTime);
         }
@@ -139,6 +149,7 @@ namespace Platforms
 
             spriteBatch.Begin();
             floor.Draw();
+            level.Draw();
             character.Draw();
             spriteBatch.End();
 
