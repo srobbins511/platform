@@ -42,7 +42,6 @@ namespace Platforms
         private static float Gravity = 10;
         private static float MovementSpeed = 5;
         private bool Jumped = false;
-        private bool canJump = false;
 
         //initailize all the character data
         public Character(GameContent gameContent, SpriteBatch spriteBatch, float x, float y, float screenWidth, float screenHeight)
@@ -108,26 +107,35 @@ namespace Platforms
         public void Move(Floor floor, Level level)
         {
             float prevX = X;
-            Rectangle charRect = new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
-            if (X > 0 && X < screenWidth - xVector)
+            Rectangle charRect = new Rectangle((int)X, (int)(Y+Height-1), (int)Width, 1);
+            if (X > 5 && X < screenWidth - xVector)
             {
                 X += (float)xVector;
                 distance = (float)xVector;
             }
             if (colTest(charRect, level))
             {
-                Y = tileY - 55;
-                
-                canJump = true;
+                if(!stable)
+                {
+                    Y = tileY - Height+1;
+                    stable = true;
+                }
             }
             else if (colTest(charRect, floor))
             {
-                Y = floor.Y - 45;
-                canJump = true;
+                if(!stable)
+                {
+                    Y = floor.Y - Height+1;
+                    stable = true;
+                }
+                
             }
             else
             {
                 stable = false;
+            }
+            if(!stable)
+            {
                 Y = Y + (float)yVector;
             }
             if (Jumped)
@@ -157,7 +165,6 @@ namespace Platforms
             {
                 if (Rectangle.Intersect(r1, l.rect) != Rectangle.Empty)
                 {
-                    stable = true;
                     return true;
                 }
             }
@@ -170,7 +177,6 @@ namespace Platforms
             {
                 if (Rectangle.Intersect(r1, t.rect) != Rectangle.Empty)
                 {
-                    stable = true;
                     tileY = (int)t.Y;
                     return true;
                 }
@@ -192,7 +198,11 @@ namespace Platforms
 
         public void ResetVectorY()
         {
-            if (yVector < Gravity)
+            if(stable)
+            {
+                yVector = 0;
+            }
+            else if (yVector < Gravity)
             {
                 yVector += .5;
             }
@@ -205,11 +215,10 @@ namespace Platforms
         //set the yVector to create upward movement for the character
         public void Jump()
         {
-            if(canJump)
+            if(stable)
             {
                 yVector = JumpHeight/2;
                 Jumped = true;
-                canJump = false;
             }
         }
     }

@@ -28,7 +28,7 @@ namespace Platforms
             Width = 0;
             Height = 0;
             Tile platform = new Tile(gameContent, spriteBatch, 0, 0);
-            X = screenWidth/2;
+            X = screenWidth;
             Y = screenHeight- (screenHeight/4);
             prevHeight = 0;
             

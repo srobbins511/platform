@@ -120,7 +120,10 @@ namespace Platforms
                 character.ResetVectorX();
             }
             character.Move(floor, level);
-            character.ResetVectorY();
+            if(!character.stable)
+            {
+                character.ResetVectorY();
+            }
 
             foreach (Land l in floor.floor)
             {

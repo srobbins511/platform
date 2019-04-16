@@ -24,7 +24,7 @@ namespace Platforms
             platform = gameContent.JumpTile;
             this.spriteBatch = spriteBatch;
             Height = 20;
-            Width = 70;
+            Width = 50;
             X = x;
             Y = y;
             rect = new Rectangle((int)X, (int)Y,(int) Width, (int)Height);
