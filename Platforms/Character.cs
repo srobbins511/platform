@@ -115,7 +115,7 @@ namespace Platforms
             }
             if (colTest(charRect, level))
             {
-                if(!stable)
+                if(!stable && yVector>=0)
                 {
                     Y = tileY - Height+1;
                     stable = true;
@@ -123,7 +123,7 @@ namespace Platforms
             }
             else if (colTest(charRect, floor))
             {
-                if(!stable)
+                if(!stable && yVector>=0)
                 {
                     Y = floor.Y - Height+1;
                     stable = true;
