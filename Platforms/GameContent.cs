@@ -23,9 +23,12 @@ namespace Platforms
         public Texture2D rightArm { get; set; }
         public Texture2D rightLeg { get; set; }
         public Texture2D rightHand { get; set; }
-        public SpriteFont labelFont { get; set; }
         public Texture2D landTile { get; set; }
         public Texture2D JumpTile { get; set; }
+        public SpriteFont labelFont { get; set; }
+        public SoundEffect jumpSound { get; set; }
+        public SoundEffect wallBounce { get; set; }
+        public SoundEffect deathSound { get; set; }
 
         public GameContent(ContentManager Content)
         {
