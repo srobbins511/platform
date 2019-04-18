@@ -44,6 +44,7 @@ namespace Platforms
         private static float Gravity = 10;
         private static float MovementSpeed = 5;
         private bool Jumped = false;
+        public bool landOnSpike { get; set; }
 
         //initailize all the character data
         public Character(GameContent gameContent, SpriteBatch spriteBatch, float x, float y, float screenWidth, float screenHeight)
@@ -192,6 +193,10 @@ namespace Platforms
                 count++;
                 if (Rectangle.Intersect(r1, t.rect) != Rectangle.Empty)
                 {
+                    if(t.platformType == 2&& yVector > 0)
+                    {
+                        landOnSpike = true;
+                    }
                     if(count>0)
                     {
                         resetFloor = true;

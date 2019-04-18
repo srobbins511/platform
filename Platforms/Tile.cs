@@ -19,6 +19,8 @@ namespace Platforms
         public float X { get; set; }
         public float Y { get; }
         public Rectangle rect;
+        public int platformType { get; set; }
+
         public Tile(GameContent gameContent, SpriteBatch spriteBatch, float x, float y)
         {
             platform = gameContent.JumpTile;
@@ -28,6 +30,21 @@ namespace Platforms
             X = x;
             Y = y;
             rect = new Rectangle((int)X, (int)Y,(int) Width, (int)Height);
+        }
+
+        public Tile(GameContent gameContent, SpriteBatch spriteBatch, float x, float y, int type)
+        {
+            platformType = type;
+            if(platformType == 2)
+            {
+                platform = gameContent.SpikyPad;
+            }
+            this.spriteBatch = spriteBatch;
+            Height = 20;
+            Width = 50;
+            X = x;
+            Y = y;
+            rect = new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
         }
 
         public void Draw()

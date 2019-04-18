@@ -25,6 +25,7 @@ namespace Platforms
         public Texture2D rightHand { get; set; }
         public Texture2D landTile { get; set; }
         public Texture2D JumpTile { get; set; }
+        public Texture2D SpikyPad { get; set; }
         public SpriteFont labelFont { get; set; }
         public SoundEffect jumpSound { get; set; }
         public SoundEffect wallBounce { get; set; }
@@ -46,6 +47,7 @@ namespace Platforms
             labelFont = Content.Load<SpriteFont>("Arial20");
             landTile = Content.Load<Texture2D>("bg");
             JumpTile = Content.Load<Texture2D>("Pad1Sized");
+            SpikyPad = Content.Load<Texture2D>("SpikyPad");
         }
     }
 }
