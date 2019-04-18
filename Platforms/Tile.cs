@@ -38,10 +38,15 @@ namespace Platforms
             if(platformType == 2)
             {
                 platform = gameContent.SpikyPad;
+                Width = 50;
+            }
+            else if (platformType == 3)
+            {
+                platform = gameContent.IcyPad;
+                Width = 67;
             }
             this.spriteBatch = spriteBatch;
             Height = 20;
-            Width = 50;
             X = x;
             Y = y;
             rect = new Rectangle((int)X, (int)Y, (int)Width, (int)Height);

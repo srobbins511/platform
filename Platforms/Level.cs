@@ -23,6 +23,8 @@ namespace Platforms
         public static int levelCount = 1;
         public int platformNumber { get; set; }
         public int specPlatformNum { get; set; }
+        private int xOffset;
+        private int yOffset;
 
         public Level(GameContent gameContent, SpriteBatch spriteBatch, float screenWidth, float screenHeight, Floor floor)
         {
@@ -62,8 +64,26 @@ namespace Platforms
 
             for (int i = platformNumber; i < platformNumber + specPlatformNum; i++)
             {
+                int type = randGen.Next(2, 4);
+                int offsetShift = randGen.Next(-3, 3);
                 int platformPlace = randGen.Next(0, platformNumber);
-                level[i] = new Tile(gameContent, spriteBatch, level[platformPlace].X-50, level[platformPlace].Y, 2);
+                int Y = 0;
+                int x = 0;
+                if(type == 2)
+                {
+                    xOffset = 50;
+                    yOffset = (int)level[platformPlace].Y;
+                    X = level[platformPlace].X - xOffset;
+                    Y = yOffset;
+                }
+                else
+                {
+                    xOffset = -67;
+                    yOffset = -50*offsetShift;
+                    X = level[platformPlace].X - xOffset;
+                    Y = (int)level[platformPlace].Y - yOffset;
+                }
+                level[i] = new Tile(gameContent, spriteBatch, X, Y, type);
             }
 
 

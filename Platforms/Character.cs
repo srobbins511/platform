@@ -45,6 +45,7 @@ namespace Platforms
         private static float MovementSpeed = 5;
         private bool Jumped = false;
         public bool landOnSpike { get; set; }
+        public bool landOnIce { get; set; }
 
         //initailize all the character data
         public Character(GameContent gameContent, SpriteBatch spriteBatch, float x, float y, float screenWidth, float screenHeight)
@@ -64,6 +65,8 @@ namespace Platforms
             stable = false;
             Width = 30;
             Height = 55;
+            landOnIce = false;
+            landOnSpike = false;
             this.screenWidth= screenWidth;
             this.screenHeight = screenHeight;
 
@@ -197,7 +200,15 @@ namespace Platforms
                     {
                         landOnSpike = true;
                     }
-                    if(count>0)
+                    if (t.platformType == 3 && yVector > 0)
+                    {
+                        landOnIce = true;
+                    }
+                    else
+                    {
+                        landOnIce = false;
+                    }
+                    if (count>0)
                     {
                         resetFloor = true;
                     }
@@ -213,6 +224,10 @@ namespace Platforms
             if(xVector > -.4 && xVector < .4)
             {
                 xVector = 0;
+            }
+            else if(landOnIce)
+            {
+                return;
             }
             else 
             {
