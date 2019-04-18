@@ -19,15 +19,17 @@ namespace Platforms
         public float Y { get; }
         private float prevHeight;
         private float variation;
-        private Random posNeg = new Random();
+        private Random randGen = new Random();
         public static int levelCount = 1;
         public int platformNumber { get; set; }
+        public int specPlatformNum { get; set; }
 
         public Level(GameContent gameContent, SpriteBatch spriteBatch, float screenWidth, float screenHeight, Floor floor)
         {
             variation = 100;
             platformNumber = 20 * levelCount;
-            level = new Tile[platformNumber];
+            specPlatformNum = 5 * levelCount;
+            level = new Tile[platformNumber + specPlatformNum];
             Width = 0;
             Height = 0;
             Tile platform = new Tile(gameContent, spriteBatch, 0, 0);
@@ -38,7 +40,7 @@ namespace Platforms
             for (int i = 0; i < platformNumber ; i++)
             {
                 level[i] = new Tile(gameContent, spriteBatch, X + (100*i+1),Y );
-                int zerOne = posNeg.Next(0, 2);
+                int zerOne = randGen.Next(0, 2);
                 prevHeight = Y;
                 if(Y>100 && Y<=(screenHeight-200))
                 {
@@ -57,6 +59,14 @@ namespace Platforms
                 }
                 
             }
+
+            for (int i = platformNumber; i < platformNumber + specPlatformNum; i++)
+            {
+                int platformPlace = randGen.Next(0, platformNumber);
+                level[i] = new Tile(gameContent, spriteBatch, level[platformPlace].X-50, level[platformPlace].Y, 2);
+            }
+
+
         }
 
         public void Draw()

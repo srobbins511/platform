@@ -15,7 +15,6 @@ namespace Platforms
         private Character character;
         private Floor floor;
         private Level level;
-        private Level level2;
         private int charX;
         private int charY;
         private int screenWidth;
@@ -96,6 +95,10 @@ namespace Platforms
 
             // TODO: Add your update logic here
             if(character.Y>screenHeight)
+            {
+                Exit();
+            }
+            if(character.landOnSpike)
             {
                 Exit();
             }
