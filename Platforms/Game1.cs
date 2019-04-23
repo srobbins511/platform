@@ -15,6 +15,11 @@ namespace Platforms
         private Character character;
         private Floor floor;
         private Level level;
+        private Button startButton;
+        private Button exitButton;
+        private Vector2 startButtonPosition;
+        private Vector2 exitButtonPosition;
+        private bool isPlaying;
 
 
         private Level level2;
@@ -74,6 +79,12 @@ namespace Platforms
             charY = 300;
             character = new Character(gameContent, spriteBatch, charX, charY, screenWidth, screenHeight);
             floor = new Floor(gameContent, spriteBatch, screenWidth, screenHeight);
+            level = new Level(gameContent, spriteBatch, screenWidth, screenHeight, floor);
+            startButtonPosition = new Vector2((screenWidth / 5) - (screenWidth / 10), (screenHeight / 10) * 4);
+            exitButtonPosition = new Vector2((screenWidth / 5) - (screenWidth / 10), (screenHeight / 10) * 6);
+            startButton = new Button(this, "Start", screenHeight / 10, screenWidth / 5, startButtonPosition);
+            exitButton = new Button(this, "Exit", screenHeight / 10, screenWidth / 5, exitButtonPosition);
+            isPlaying = false;
             level = new Level(gameContent, spriteBatch, screenWidth, screenHeight, floor, 1);
             
             level2 = new Level(gameContent, spriteBatch, screenWidth, screenHeight,level, 2);

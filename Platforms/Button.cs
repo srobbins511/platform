@@ -23,6 +23,8 @@ namespace Platforms
         Rectangle button;
 
         public bool clicked = false;
+        public bool start = false;
+        public bool exit = false;
 
         public Button(Game1 game, string text, int height, int width, Vector2 position)
         {
@@ -38,16 +40,6 @@ namespace Platforms
             button = new Rectangle((int)Position.X, (int)Position.Y, this.width, this.height);
         }
 
-        public void StartButton()
-        {
-
-        }
-
-        public void ExitButton()
-        {
-
-        }
-
         public void Update(GameTime gameTime)
         {
             if (!clicked)
@@ -60,11 +52,11 @@ namespace Platforms
                     {
                         if (text.Equals("Start"))
                         {
-                            StartButton();
+
                         }
                         else
                         {
-                            ExitButton();
+                            Game1.Exit();
                         }
                         clicked = true;
                     }
