@@ -15,6 +15,8 @@ namespace Platforms
         private Character character;
         private Floor floor;
         private Level level;
+
+
         private Level level2;
         private Level[] levels;
         private int charX;
