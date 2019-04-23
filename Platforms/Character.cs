@@ -111,7 +111,7 @@ namespace Platforms
             }
         }
         //Use the vectors to move the character on the x axis
-        public void Move(Floor floor, Level level)
+        public void Move(Floor floor, Level[] map)
         {
             float prevX = X;
             Rectangle charRect = new Rectangle((int)X, (int)(Y + Height - 1), (int)Width, 1);
@@ -125,7 +125,7 @@ namespace Platforms
                 X += (float)xVector;
                 distance = (float)xVector;
             }
-            if (colTest(charRect, level))
+            if (colTest(charRect, map))
             {
                 if(!stable && yVector>=0)
                 {
@@ -162,15 +162,19 @@ namespace Platforms
                     l.X = l.X - distance;
                     l.rect = new Rectangle((int)l.X, (int)l.Y,(int) l.Width,(int)l.Height);
                 }
-                foreach (Tile t in level.level)
+                foreach (Level l in map)
                 {
-                    t.X = t.X - distance;
-                    t.rect = new Rectangle((int)t.X, (int)t.Y, (int)t.Width, (int)t.Height);
+                    foreach (Tile t in l.level)
+                    {
+                        t.X = t.X - distance;
+                        t.rect = new Rectangle((int)t.X, (int)t.Y, (int)t.Width, (int)t.Height);
+                    }
                 }
             }
            
         }
 
+        //Check to see if the Character has landed on the floor
         public Boolean colTest(Rectangle r1, Floor floor)
         {
             foreach(Land l in floor.floor)
@@ -188,10 +192,43 @@ namespace Platforms
             return false;
         }
 
-        public Boolean colTest(Rectangle r1, Level level)
+        //chack to see if the character has landed on any tiles
+        public Boolean colTest(Rectangle r1, Level[] map)
         {
             int count = 0;
-            foreach (Tile t in level.level)
+            foreach (Level l in map)
+            {
+                if(l.visible)
+                {
+                    foreach (Tile t in l.level)
+                    {
+                        count++;
+                        if (Rectangle.Intersect(r1, t.rect) != Rectangle.Empty)
+                        {
+                            if (t.platformType == 2 && yVector > 0)
+                            {
+                                landOnSpike = true;
+                            }
+                            if (t.platformType == 3 && yVector > 0)
+                            {
+                                landOnIce = true;
+                            }
+                            else
+                            {
+                                landOnIce = false;
+                            }
+                            if (count > 0)
+                            {
+                                resetFloor = true;
+                            }
+                            tileY = (int)t.Y;
+                            return true;
+                        }
+                    }
+                }   
+            }
+            /*
+            foreach (Tile t in map.level)
             {
                 count++;
                 if (Rectangle.Intersect(r1, t.rect) != Rectangle.Empty)
@@ -215,7 +252,7 @@ namespace Platforms
                     tileY = (int)t.Y;
                     return true;
                 }
-            }
+            }*/
             return false;
         }
         //Alter the vector values when they are not in use so they return to their default states
@@ -235,6 +272,7 @@ namespace Platforms
             }
         }
 
+        //Reset the Y vector of the character based on its current y Vector
         public void ResetVectorY()
         {
             if(stable)

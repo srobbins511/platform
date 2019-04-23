@@ -15,6 +15,8 @@ namespace Platforms
         private Character character;
         private Floor floor;
         private Level level;
+        private Level level2;
+        private Level[] levels;
         private int charX;
         private int charY;
         private int screenWidth;
@@ -70,7 +72,12 @@ namespace Platforms
             charY = 300;
             character = new Character(gameContent, spriteBatch, charX, charY, screenWidth, screenHeight);
             floor = new Floor(gameContent, spriteBatch, screenWidth, screenHeight);
-            level = new Level(gameContent, spriteBatch, screenWidth, screenHeight, floor);
+            level = new Level(gameContent, spriteBatch, screenWidth, screenHeight, floor, 1);
+            
+            level2 = new Level(gameContent, spriteBatch, screenWidth, screenHeight,level, 2);
+            levels = new Level[2];
+            levels[0] = level;
+            levels[1] = level2;
         }
 
         /// <summary>
@@ -104,7 +111,9 @@ namespace Platforms
             }
             if(character.WinLevel)
             {
-                Exit();
+                levels[0].visible = false;
+                levels[1].visible = true;
+                //Exit();
             }
             
             KeyboardState currentKeyboardState = Keyboard.GetState();
@@ -128,7 +137,7 @@ namespace Platforms
             {
                 character.ResetVectorX();
             }
-            character.Move(floor, level);
+            character.Move(floor, levels);
             if(!character.stable)
             {
                 character.ResetVectorY();
@@ -139,12 +148,15 @@ namespace Platforms
                 l.X = l.X - 1;
                 l.rect = new Rectangle((int)l.X, (int)l.Y, (int)l.Width, (int)l.Height);
             }
-            foreach (Tile t in level.level)
+            foreach (Level l in levels)
             {
-                t.X = t.X - 1;
-                t.rect = new Rectangle((int)t.X, (int)t.Y, (int)t.Width, (int)t.Height);
+                foreach(Tile t in l.level)
+                {
+                    t.X = t.X - 1;
+                    t.rect = new Rectangle((int)t.X, (int)t.Y, (int)t.Width, (int)t.Height);
+                }
             }
-            if(character.resetFloor)
+            if (character.resetFloor)
             {
                 foreach (Land l in floor.floor)
                 {
@@ -169,7 +181,13 @@ namespace Platforms
 
             spriteBatch.Begin();
             floor.Draw();
-            level.Draw();
+            foreach(Level l in levels)
+            {
+                if(l.visible)
+                {
+                    l.Draw();
+                }
+            }
             character.Draw();
             spriteBatch.End();
 

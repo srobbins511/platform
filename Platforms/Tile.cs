@@ -21,6 +21,7 @@ namespace Platforms
         public Rectangle rect;
         public int platformType { get; set; }
 
+        //Constructor to create a basic tile
         public Tile(GameContent gameContent, SpriteBatch spriteBatch, float x, float y)
         {
             platform = gameContent.JumpTile;
@@ -32,6 +33,7 @@ namespace Platforms
             rect = new Rectangle((int)X, (int)Y,(int) Width, (int)Height);
         }
 
+        //Constructor to create a special tile, the last param is used to determine the type of special tiel
         public Tile(GameContent gameContent, SpriteBatch spriteBatch, float x, float y, int type)
         {
             platformType = type;
