@@ -19,6 +19,7 @@ namespace Platforms
         private Vector2 startButtonPosition;
         private Vector2 exitButtonPosition;
         private bool isPlaying = false;
+        private bool isStarted = false;
         private Level level;
         private Level level2;
         private Level[] levels;
@@ -110,8 +111,13 @@ namespace Platforms
                 Exit();
 
             // TODO: Add your update logic here
-            if(isPlaying)
+            KeyboardState currentKeyboardState = Keyboard.GetState();
+            if (isPlaying)
             {
+                if (currentKeyboardState.IsKeyDown(Keys.Enter)&&prevKeyboardState.IsKeyUp(Keys.Enter))
+                {
+                    isPlaying = false;
+                }
                 if (character.Y > screenHeight)
                 {
                     Exit();
@@ -127,7 +133,7 @@ namespace Platforms
                     //Exit();
                 }
 
-                KeyboardState currentKeyboardState = Keyboard.GetState();
+                
                 if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.A))
                 {
                     if (currentKeyboardState.IsKeyDown(Keys.D))
@@ -176,12 +182,18 @@ namespace Platforms
                     }
                 }
                 character.X -= 1;
-                prevKeyboardState = currentKeyboardState;
+                
             }
             else
             {
-                isPlaying = true;
+                if(currentKeyboardState.IsKeyDown(Keys.Enter)&&prevKeyboardState.IsKeyUp(Keys.Enter))
+                {
+                    isPlaying = true;
+                    isStarted = true;
+                }
+                
             }
+            prevKeyboardState = currentKeyboardState;
             base.Update(gameTime);
         }
 
@@ -196,7 +208,7 @@ namespace Platforms
             // TODO: Add your drawing code here
             
             spriteBatch.Begin();
-            if (isPlaying)
+            if (isStarted)
             {
                 floor.Draw();
                 foreach (Level l in levels)
