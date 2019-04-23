@@ -14,14 +14,12 @@ namespace Platforms
         GameContent gameContent;
         private Character character;
         private Floor floor;
-        private Level level;
         private Button startButton;
         private Button exitButton;
         private Vector2 startButtonPosition;
         private Vector2 exitButtonPosition;
-        private bool isPlaying;
-
-
+        private bool isPlaying = false;
+        private Level level;
         private Level level2;
         private Level[] levels;
         private int charX;
@@ -79,14 +77,12 @@ namespace Platforms
             charY = 300;
             character = new Character(gameContent, spriteBatch, charX, charY, screenWidth, screenHeight);
             floor = new Floor(gameContent, spriteBatch, screenWidth, screenHeight);
-            level = new Level(gameContent, spriteBatch, screenWidth, screenHeight, floor);
             startButtonPosition = new Vector2((screenWidth / 5) - (screenWidth / 10), (screenHeight / 10) * 4);
             exitButtonPosition = new Vector2((screenWidth / 5) - (screenWidth / 10), (screenHeight / 10) * 6);
             startButton = new Button(this, "Start", screenHeight / 10, screenWidth / 5, startButtonPosition);
             exitButton = new Button(this, "Exit", screenHeight / 10, screenWidth / 5, exitButtonPosition);
             isPlaying = false;
             level = new Level(gameContent, spriteBatch, screenWidth, screenHeight, floor, 1);
-            
             level2 = new Level(gameContent, spriteBatch, screenWidth, screenHeight,level, 2);
             levels = new Level[2];
             levels[0] = level;
@@ -114,71 +110,78 @@ namespace Platforms
                 Exit();
 
             // TODO: Add your update logic here
-            if(character.Y>screenHeight)
+            if(isPlaying)
             {
-                Exit();
-            }
-            if(character.landOnSpike)
-            {
-                Exit();
-            }
-            if(character.WinLevel)
-            {
-                levels[0].visible = false;
-                levels[1].visible = true;
-                //Exit();
-            }
-            
-            KeyboardState currentKeyboardState = Keyboard.GetState();
-            if(currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.A))
-            {
-                if (currentKeyboardState.IsKeyDown(Keys.D))
+                if (character.Y > screenHeight)
                 {
-                    character.MovingRight();
+                    Exit();
                 }
-                else if (currentKeyboardState.IsKeyDown(Keys.A))
+                if (character.landOnSpike)
                 {
-                    character.MovingLeft();
+                    Exit();
                 }
-                
-            }
-            if (currentKeyboardState.IsKeyDown(Keys.Space) && prevKeyboardState.IsKeyDown(Keys.Space))
-            {
-                character.Jump();
-            }
-            if(!(currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.A)))
-            {
-                character.ResetVectorX();
-            }
-            character.Move(floor, levels);
-            if(!character.stable)
-            {
-                character.ResetVectorY();
-            }
+                if (character.WinLevel)
+                {
+                    levels[0].visible = false;
+                    levels[1].visible = true;
+                    //Exit();
+                }
 
-            foreach (Land l in floor.floor)
-            {
-                l.X = l.X - 1;
-                l.rect = new Rectangle((int)l.X, (int)l.Y, (int)l.Width, (int)l.Height);
-            }
-            foreach (Level l in levels)
-            {
-                foreach(Tile t in l.level)
+                KeyboardState currentKeyboardState = Keyboard.GetState();
+                if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.A))
                 {
-                    t.X = t.X - 1;
-                    t.rect = new Rectangle((int)t.X, (int)t.Y, (int)t.Width, (int)t.Height);
+                    if (currentKeyboardState.IsKeyDown(Keys.D))
+                    {
+                        character.MovingRight();
+                    }
+                    else if (currentKeyboardState.IsKeyDown(Keys.A))
+                    {
+                        character.MovingLeft();
+                    }
+
                 }
-            }
-            if (character.resetFloor)
-            {
+                if (currentKeyboardState.IsKeyDown(Keys.Space) && prevKeyboardState.IsKeyDown(Keys.Space))
+                {
+                    character.Jump();
+                }
+                if (!(currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.A)))
+                {
+                    character.ResetVectorX();
+                }
+                character.Move(floor, levels);
+                if (!character.stable)
+                {
+                    character.ResetVectorY();
+                }
+
                 foreach (Land l in floor.floor)
                 {
-                    l.X = level.level[level.platformNumber-1].X;
+                    l.X = l.X - 1;
                     l.rect = new Rectangle((int)l.X, (int)l.Y, (int)l.Width, (int)l.Height);
                 }
+                foreach (Level l in levels)
+                {
+                    foreach (Tile t in l.level)
+                    {
+                        t.X = t.X - 1;
+                        t.rect = new Rectangle((int)t.X, (int)t.Y, (int)t.Width, (int)t.Height);
+                    }
+                }
+                if (character.resetFloor)
+                {
+                    foreach (Land l in floor.floor)
+                    {
+                        l.X = level.level[level.platformNumber - 1].X;
+                        l.rect = new Rectangle((int)l.X, (int)l.Y, (int)l.Width, (int)l.Height);
+                    }
+                }
+                character.X -= 1;
+                prevKeyboardState = currentKeyboardState;
             }
-            character.X -= 1;
-            prevKeyboardState = currentKeyboardState;
+            else
+            {
+                isPlaying = true;
+            }
             base.Update(gameTime);
         }
 
@@ -191,17 +194,20 @@ namespace Platforms
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            
             spriteBatch.Begin();
-            floor.Draw();
-            foreach(Level l in levels)
+            if (isPlaying)
             {
-                if(l.visible)
+                floor.Draw();
+                foreach (Level l in levels)
                 {
-                    l.Draw();
+                    if (l.visible)
+                    {
+                        l.Draw();
+                    }
                 }
+                character.Draw();
             }
-            character.Draw();
             spriteBatch.End();
 
             base.Draw(gameTime);
