@@ -91,6 +91,7 @@ namespace Platforms
             charY = 300;
             character = new Character(gameContent, spriteBatch, charX, charY, screenWidth, screenHeight);
             floor = new Floor(gameContent, spriteBatch, screenWidth, screenHeight);
+            //create all the buttons needed for the game and place them
             startButtonPosition = new Vector2((screenWidth / 2 - 20), (screenHeight / 10) * 5);
             exitButtonPosition = new Vector2((screenWidth / 2 - 20) , (screenHeight / 10) * 6);
             startButton = new Button(this, spriteBatch, gameContent, "Start", screenHeight / 10, screenWidth / 5, startButtonPosition);
@@ -100,7 +101,9 @@ namespace Platforms
             exitButton = new Button(this, spriteBatch, gameContent, "Exit", screenHeight / 10, screenWidth / 5, exitButtonPosition);
             exitButtonPosition.Y -= 50;
             ReturnButton = new Button(this, spriteBatch, gameContent, "Return", screenHeight / 10, screenWidth / 5, exitButtonPosition);
+            //create the bool for if the game has started and is not paused
             isPlaying = false;
+            //load in all the levels
             level = new Level(gameContent, spriteBatch, screenWidth, screenHeight, floor, 1);
             level2 = new Level(gameContent, spriteBatch, screenWidth, screenHeight, level, 2);
             level3 = new Level(gameContent, spriteBatch, screenWidth, screenHeight, level2, 3);
@@ -112,8 +115,11 @@ namespace Platforms
             levels[2] = level3;
             levels[3] = level4;
             levels[4] = level5;
+            //create the level counter
             levCounter = new LevelCounter(gameContent, spriteBatch);
+            //create the mouse object so player can see a mouse in the menus
             mouse = new DrawMouse(spriteBatch, gameContent);
+            //create a controls list so the control menu can be seen
             controlsList= new ControlsList(this, spriteBatch, gameContent);
         }
 
@@ -140,37 +146,38 @@ namespace Platforms
             // TODO: Add your update logic here
             KeyboardState currentKeyboardState = Keyboard.GetState();
             LevelCounter.updateCount();
-            if (isPlaying)
+            if (isPlaying)//Check to see if game should be running or not
             {
+                //check to see if player pauses the game
                 if (currentKeyboardState.IsKeyDown(Keys.Enter)&&prevKeyboardState.IsKeyUp(Keys.Enter))
                 {
                     isPlaying = false;
                 }
-                if (character.Y > screenHeight)
+                if (character.Y > screenHeight)//check to see if character fell off the botton of the screen
                 {
                     died = true;
                 }
-                if (character.landOnSpike)
+                if (character.landOnSpike)//check to see if character landed on a spike
                 {
                     died = true;
                 }
-                if (character.WinLevel)
+                if (character.WinLevel)//check to see if character has completed the current level
                 {
                     levels[Level.curLevel].visible = false;
                     levels[Level.curLevel + 1].visible = true;
                     //Exit();
                 }
-                if (died)
+                if (died)//check to see if character has died in some way
                 {
                     isPlaying = false;
                 }
-                if (character.WinCounter >= 5)
+                if (character.WinCounter >= 5)//check to see if character has completed all levels and won the game
                 {
                     isPlaying = false;
                     Win = true;
                 }
 
-
+                //check to see if character should move
                 if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.A))
                 {
                     if (currentKeyboardState.IsKeyDown(Keys.D))
@@ -183,20 +190,25 @@ namespace Platforms
                     }
 
                 }
+                //check to see if character should jump
                 if (currentKeyboardState.IsKeyDown(Keys.Space) && prevKeyboardState.IsKeyDown(Keys.Space))
                 {
                     character.Jump();
                 }
+                //check to see if character is not moving
                 if (!(currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.A)))
                 {
                     character.ResetVectorX();
                 }
+                //move the character
                 character.Move(floor, levels);
+                //check to see if character is not on top of an object
                 if (!character.stable)
                 {
                     character.ResetVectorY();
                 }
 
+                //the logic to cause the screen to passively scroll
                 foreach (Land l in floor.floor)
                 {
                     l.X = l.X - 1;
@@ -210,6 +222,7 @@ namespace Platforms
                         t.rect = new Rectangle((int)t.X, (int)t.Y, (int)t.Width, (int)t.Height);
                     }
                 }
+                //the logic to cause the floor to move to its next position when character starts the next level
                 if (character.resetFloor)
                 {
                     foreach (Land l in floor.floor)
@@ -219,28 +232,34 @@ namespace Platforms
                     }
                     
                 }
+                //scroll the character with the landscape
                 character.X -= 1;
                 
             }
             else
             {
+                //check to see if player clicked start
                 if(startButton.Update(gameTime)&&!isStarted)
                 {
                     isPlaying = true;
                     isStarted = true;
                 }
+                //check to see if character clicked continue when paused
                 else if(ContinueButton.Update(gameTime)&&!died)
                 {
                     isPlaying = true;
                 }
+                //check to see if player clicked controls
                 else if(ControlsButton.Update(gameTime))
                 {
                     ControlScreen = true;
                 }
+                //check to see if player wants to return to menu from looking at controls
                 else if (ReturnButton.Update(gameTime))
                 {
                     ControlScreen = false;
                 }
+                //check to see if character hit exit
                 else if(exitButton.Update(gameTime))
                 {
                     died = false;
@@ -248,6 +267,7 @@ namespace Platforms
                 }
                 
             }
+            //save the current keyboard state for next update call
             prevKeyboardState = currentKeyboardState;
             base.Update(gameTime);
         }
@@ -258,13 +278,17 @@ namespace Platforms
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            //draw in the sky
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
             
             spriteBatch.Begin();
+            //check to see if character has started playing or is on start menu
             if (isStarted)
             {
+                //check to see if after starting player has paused or not
+                //if not draw the normal game screen
                 if(isPlaying)
                 {
                     floor.Draw();
@@ -277,6 +301,8 @@ namespace Platforms
                     }
                     character.Draw();
                 }
+                //check to see if character has paused
+                //if so draw the pause screen
                 else if(!died&&!ControlScreen&&!Win)
                 {
                     ContinueButton.Draw();
@@ -284,27 +310,33 @@ namespace Platforms
                     exitButton.Draw();
                     mouse.Draw();
                 }
+                //check to see if the player waants to view the controls
                 else if(ControlScreen)
                 {
+                    //if yes draw out the controls screen
                     controlsList.Draw();
                     ReturnButton.Draw();
                     mouse.Draw();
                 }
+                //will draw the exit screen if either character has died or won
                 else
                 {
                     exitButton.Draw();
                     mouse.Draw();
                 }
+                //draw the level counter and score keeping
                 levCounter.Draw();
             }
             else if (ControlScreen)
             {
+                //if they have not started but want to view controls show the controls screen
                 controlsList.Draw();
                 ReturnButton.Draw();
                 mouse.Draw();
             }
             else
             {
+                //draw the start menu if player has not clicked start
                 startButton.Draw();
                 ControlsButton.Draw();
                 exitButton.Draw();
