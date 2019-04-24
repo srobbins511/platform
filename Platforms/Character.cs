@@ -46,6 +46,7 @@ namespace Platforms
         private bool Jumped = false;
         public bool landOnSpike { get; set; }
         public bool landOnIce { get; set; }
+        public static int score = 0;
 
         //initailize all the character data
         public Character(GameContent gameContent, SpriteBatch spriteBatch, float x, float y, float screenWidth, float screenHeight)
@@ -157,6 +158,7 @@ namespace Platforms
             }
             if(prevX < X)
             {
+                score+= 1 * (Level.curLevel + 1);
                 foreach (Land l in floor.floor)
                 {
                     l.X = l.X - distance;
@@ -196,6 +198,7 @@ namespace Platforms
         public Boolean colTest(Rectangle r1, Level[] map)
         {
             int count = 0;
+            int levCount = 0;
             foreach (Level l in map)
             {
                 if(l.visible)
@@ -219,40 +222,21 @@ namespace Platforms
                             }
                             if (count > 0)
                             {
+                                WinLevel = false;
                                 resetFloor = true;
+                                if(levCount> Level.curLevel)
+                                {
+                                    Level.curLevel++;
+                                }
                             }
                             tileY = (int)t.Y;
                             return true;
                         }
                     }
-                }   
-            }
-            /*
-            foreach (Tile t in map.level)
-            {
-                count++;
-                if (Rectangle.Intersect(r1, t.rect) != Rectangle.Empty)
-                {
-                    if(t.platformType == 2&& yVector > 0)
-                    {
-                        landOnSpike = true;
-                    }
-                    if (t.platformType == 3 && yVector > 0)
-                    {
-                        landOnIce = true;
-                    }
-                    else
-                    {
-                        landOnIce = false;
-                    }
-                    if (count>0)
-                    {
-                        resetFloor = true;
-                    }
-                    tileY = (int)t.Y;
-                    return true;
                 }
-            }*/
+                levCount++;
+            }
+            
             return false;
         }
         //Alter the vector values when they are not in use so they return to their default states

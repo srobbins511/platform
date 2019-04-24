@@ -26,6 +26,7 @@ namespace Platforms
         private int xOffset;
         private int yOffset;
         public bool visible;
+        public static int curLevel = 0;
 
         //Generate the level randomly based on several parameters
         public Level(GameContent gameContent, SpriteBatch spriteBatch, float screenWidth, float screenHeight, Floor floor, int levelNum)

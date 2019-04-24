@@ -22,6 +22,9 @@ namespace Platforms
         private bool isStarted = false;
         private Level level;
         private Level level2;
+        private Level level3;
+        private Level level4;
+        private Level level5;
         private Level[] levels;
         private int charX;
         private int charY;
@@ -29,6 +32,8 @@ namespace Platforms
         private int screenHeight;
         private KeyboardState prevKeyboardState;
         private GameTime gameTime;
+        private int curLevel = 0;
+        private LevelCounter levCounter;
 
         public Game1()
         {
@@ -84,10 +89,17 @@ namespace Platforms
             exitButton = new Button(this, "Exit", screenHeight / 10, screenWidth / 5, exitButtonPosition);
             isPlaying = false;
             level = new Level(gameContent, spriteBatch, screenWidth, screenHeight, floor, 1);
-            level2 = new Level(gameContent, spriteBatch, screenWidth, screenHeight,level, 2);
-            levels = new Level[2];
+            level2 = new Level(gameContent, spriteBatch, screenWidth, screenHeight, level, 2);
+            level3 = new Level(gameContent, spriteBatch, screenWidth, screenHeight, level2, 3);
+            level4 = new Level(gameContent, spriteBatch, screenWidth, screenHeight, level3, 4);
+            level5 = new Level(gameContent, spriteBatch, screenWidth, screenHeight, level4, 5);
+            levels = new Level[5];
             levels[0] = level;
             levels[1] = level2;
+            levels[2] = level3;
+            levels[3] = level4;
+            levels[4] = level5;
+            levCounter = new LevelCounter(gameContent, spriteBatch);
         }
 
         /// <summary>
@@ -112,6 +124,7 @@ namespace Platforms
 
             // TODO: Add your update logic here
             KeyboardState currentKeyboardState = Keyboard.GetState();
+            LevelCounter.updateCount();
             if (isPlaying)
             {
                 if (currentKeyboardState.IsKeyDown(Keys.Enter)&&prevKeyboardState.IsKeyUp(Keys.Enter))
@@ -128,8 +141,8 @@ namespace Platforms
                 }
                 if (character.WinLevel)
                 {
-                    levels[0].visible = false;
-                    levels[1].visible = true;
+                    levels[Level.curLevel].visible = false;
+                    levels[Level.curLevel + 1].visible = true;
                     //Exit();
                 }
 
@@ -177,9 +190,10 @@ namespace Platforms
                 {
                     foreach (Land l in floor.floor)
                     {
-                        l.X = level.level[level.platformNumber - 1].X;
+                        l.X = levels[Level.curLevel].level[levels[Level.curLevel].platformNumber - 1].X;
                         l.rect = new Rectangle((int)l.X, (int)l.Y, (int)l.Width, (int)l.Height);
                     }
+                    
                 }
                 character.X -= 1;
                 
@@ -219,6 +233,7 @@ namespace Platforms
                     }
                 }
                 character.Draw();
+                levCounter.Draw();
             }
             spriteBatch.End();
 
