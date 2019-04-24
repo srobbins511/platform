@@ -32,7 +32,7 @@ namespace Platforms
             Width = land.Width;
             X = x;
             Y = y;
-            rect = new Rectangle((int)X,(int) Y, land.Width, land.Height- (land.Height-2));
+            rect = new Rectangle((int)X,(int) Y, land.Width, 1);
         }
 
         public void Draw()

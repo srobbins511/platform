@@ -15,12 +15,14 @@ namespace Platforms
         private Character character;
         private Floor floor;
         private Button startButton;
+        private Button ContinueButton;
         private Button exitButton;
         private Vector2 startButtonPosition;
         private Vector2 exitButtonPosition;
         private DrawMouse mouse;
         private bool isPlaying = false;
         private bool isStarted = false;
+        public bool died = false;
         private Level level;
         private Level level2;
         private Level level3;
@@ -84,9 +86,10 @@ namespace Platforms
             charY = 300;
             character = new Character(gameContent, spriteBatch, charX, charY, screenWidth, screenHeight);
             floor = new Floor(gameContent, spriteBatch, screenWidth, screenHeight);
-            startButtonPosition = new Vector2((screenWidth / 2), (screenHeight / 10) * 5);
-            exitButtonPosition = new Vector2((screenWidth / 2) , (screenHeight / 10) * 6);
+            startButtonPosition = new Vector2((screenWidth / 2 - 20), (screenHeight / 10) * 5);
+            exitButtonPosition = new Vector2((screenWidth / 2 - 20) , (screenHeight / 10) * 6);
             startButton = new Button(this, spriteBatch, gameContent, "Start", screenHeight / 10, screenWidth / 5, startButtonPosition);
+            ContinueButton = new Button(this, spriteBatch, gameContent, "Continue", screenHeight / 10, screenWidth / 5, startButtonPosition);
             exitButton = new Button(this, spriteBatch, gameContent, "Exit", screenHeight / 10, screenWidth / 5, exitButtonPosition);
             isPlaying = false;
             level = new Level(gameContent, spriteBatch, screenWidth, screenHeight, floor, 1);
@@ -135,11 +138,11 @@ namespace Platforms
                 }
                 if (character.Y > screenHeight)
                 {
-                    Exit();
+                    died = true;
                 }
                 if (character.landOnSpike)
                 {
-                    Exit();
+                    died = true;
                 }
                 if (character.WinLevel)
                 {
@@ -147,8 +150,12 @@ namespace Platforms
                     levels[Level.curLevel + 1].visible = true;
                     //Exit();
                 }
+                if (died)
+                {
+                    isPlaying = false;
+                }
 
-                
+
                 if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.A))
                 {
                     if (currentKeyboardState.IsKeyDown(Keys.D))
@@ -202,13 +209,18 @@ namespace Platforms
             }
             else
             {
-                if(startButton.Update(gameTime))
+                if(startButton.Update(gameTime)&&!isStarted)
                 {
                     isPlaying = true;
                     isStarted = true;
                 }
+                else if(ContinueButton.Update(gameTime)&&!died)
+                {
+                    isPlaying = true;
+                }
                 else if(exitButton.Update(gameTime))
                 {
+                    died = false;
                     Exit();
                 }
                 
@@ -230,15 +242,29 @@ namespace Platforms
             spriteBatch.Begin();
             if (isStarted)
             {
-                floor.Draw();
-                foreach (Level l in levels)
+                if(isPlaying)
                 {
-                    if (l.visible)
+                    floor.Draw();
+                    foreach (Level l in levels)
                     {
-                        l.Draw();
+                        if (l.visible)
+                        {
+                            l.Draw();
+                        }
                     }
+                    character.Draw();
                 }
-                character.Draw();
+                else if(!died)
+                {
+                    ContinueButton.Draw();
+                    exitButton.Draw();
+                    mouse.Draw();
+                }
+                else
+                {
+                    exitButton.Draw();
+                    mouse.Draw();
+                }
                 levCounter.Draw();
             }
             else

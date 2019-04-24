@@ -57,7 +57,7 @@ namespace Platforms
             this.width = Texture.Width;
             Position = position;
             prevMouseState = Mouse.GetState();
-            button = new Rectangle((int)Position.X, (int)Position.Y, this.width, this.height);
+            button = new Rectangle((int)Position.X, (int)Position.Y, this.width *2, this.height *2);
         }
 
         /*public void Update(GameTime gameTime)
@@ -95,7 +95,7 @@ namespace Platforms
                 {
                     if (curMouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
                     {
-                        if (text.Equals("Start"))
+                        if (text.Equals("Start")|| text.Equals("Continue"))
                         {
                             clicked = true;
                             return true;
@@ -109,14 +109,34 @@ namespace Platforms
                 }
                 prevMouseState = curMouseState;
             }
+            clicked = false;
             return false;
         }
 
         public void Draw()
         {
-            spriteBatch.Draw(this.Texture, Position, null, Color.Green, 0, new Vector2(0, 0), 1f, SpriteEffects.None, 0);
+            if(text.Equals("Start"))
+            {
+                spriteBatch.Draw(this.Texture, new Vector2(Position.X - 10, Position.Y - 10), null, Color.Green, 0, new Vector2(0, 0), 2f, SpriteEffects.None, 0);
+            }
+            else if (text.Equals("Continue"))
+            {
+                spriteBatch.Draw(this.Texture, new Vector2( Position.X-10 , Position.Y - 10), null, Color.Green, 0, new Vector2(0, 0), 2f, SpriteEffects.None, 0);
+            }
+            else 
+            {
+                spriteBatch.Draw(this.Texture, new Vector2(Position.X - 10, Position.Y - 10), null, Color.Red, 0, new Vector2(0, 0), 2f, SpriteEffects.None, 0);
+            }
             spriteBatch.DrawString(spriteFont, text, Position, Color.Black);
-            spriteBatch.DrawString(spriteFont, "Golem Jump", new Vector2(Game1.screenWidth/2 - 60, Game1.screenWidth/4), Color.Black);
+            if(!Game1.died)
+            {
+                spriteBatch.DrawString(spriteFont, "Golem Jump", new Vector2(Game1.screenWidth / 2 - 60, Game1.screenWidth / 4), Color.Black);
+            }
+            else
+            {
+                spriteBatch.DrawString(spriteFont, "Died", new Vector2(Game1.screenWidth / 2 - 60, Game1.screenWidth / 4), Color.Black);
+            }
+            
 
         }
     }

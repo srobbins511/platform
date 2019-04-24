@@ -216,7 +216,7 @@ namespace Platforms
                             {
                                 landOnSpike = true;
                             }
-                            if (t.platformType == 3 && yVector > 0)
+                            if (t.platformType == 3 && yVector >= 0)
                             {
                                 landOnIce = true;
                             }
@@ -257,6 +257,7 @@ namespace Platforms
         {
             if (landOnIce)
             {
+                X += (float) xVector;
                 return;
             }
             else if (xVector > -.4 && xVector < .4)
