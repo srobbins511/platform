@@ -28,6 +28,8 @@ namespace Platforms
         public Texture2D SpikyPad { get; set; }
         public Texture2D IcyPad { get; set; }
         public Texture2D BramblePad { get; set; }
+        public Texture2D ButtonTexture { get; set; }
+        public Texture2D MouseTexture { get; set; }
         public SpriteFont labelFont { get; set; }
         public SoundEffect jumpSound { get; set; }
         public SoundEffect wallBounce { get; set; }
@@ -52,6 +54,8 @@ namespace Platforms
             SpikyPad = Content.Load<Texture2D>("SpikyPad");
             IcyPad = Content.Load<Texture2D>("IcyPad");
             BramblePad = Content.Load<Texture2D>("BramblePad");
+            ButtonTexture = Content.Load<Texture2D>("ButtonTexture");
+            MouseTexture = Content.Load<Texture2D>("MouseTexture");
         }
     }
 }

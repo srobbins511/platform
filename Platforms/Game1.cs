@@ -18,6 +18,7 @@ namespace Platforms
         private Button exitButton;
         private Vector2 startButtonPosition;
         private Vector2 exitButtonPosition;
+        private DrawMouse mouse;
         private bool isPlaying = false;
         private bool isStarted = false;
         private Level level;
@@ -28,8 +29,8 @@ namespace Platforms
         private Level[] levels;
         private int charX;
         private int charY;
-        private int screenWidth;
-        private int screenHeight;
+        public int screenWidth;
+        public int screenHeight;
         private KeyboardState prevKeyboardState;
         private GameTime gameTime;
         private int curLevel = 0;
@@ -83,10 +84,10 @@ namespace Platforms
             charY = 300;
             character = new Character(gameContent, spriteBatch, charX, charY, screenWidth, screenHeight);
             floor = new Floor(gameContent, spriteBatch, screenWidth, screenHeight);
-            startButtonPosition = new Vector2((screenWidth / 5) - (screenWidth / 10), (screenHeight / 10) * 4);
-            exitButtonPosition = new Vector2((screenWidth / 5) - (screenWidth / 10), (screenHeight / 10) * 6);
-            startButton = new Button(this, "Start", screenHeight / 10, screenWidth / 5, startButtonPosition);
-            exitButton = new Button(this, "Exit", screenHeight / 10, screenWidth / 5, exitButtonPosition);
+            startButtonPosition = new Vector2((screenWidth / 2), (screenHeight / 10) * 5);
+            exitButtonPosition = new Vector2((screenWidth / 2) , (screenHeight / 10) * 6);
+            startButton = new Button(this, spriteBatch, gameContent, "Start", screenHeight / 10, screenWidth / 5, startButtonPosition);
+            exitButton = new Button(this, spriteBatch, gameContent, "Exit", screenHeight / 10, screenWidth / 5, exitButtonPosition);
             isPlaying = false;
             level = new Level(gameContent, spriteBatch, screenWidth, screenHeight, floor, 1);
             level2 = new Level(gameContent, spriteBatch, screenWidth, screenHeight, level, 2);
@@ -100,6 +101,7 @@ namespace Platforms
             levels[3] = level4;
             levels[4] = level5;
             levCounter = new LevelCounter(gameContent, spriteBatch);
+            mouse = new DrawMouse(spriteBatch, gameContent);
         }
 
         /// <summary>
@@ -200,10 +202,14 @@ namespace Platforms
             }
             else
             {
-                if(currentKeyboardState.IsKeyDown(Keys.Enter)&&prevKeyboardState.IsKeyUp(Keys.Enter))
+                if(startButton.Update(gameTime))
                 {
                     isPlaying = true;
                     isStarted = true;
+                }
+                else if(exitButton.Update(gameTime))
+                {
+                    Exit();
                 }
                 
             }
@@ -234,6 +240,12 @@ namespace Platforms
                 }
                 character.Draw();
                 levCounter.Draw();
+            }
+            else
+            {
+                startButton.Draw();
+                exitButton.Draw();
+                mouse.Draw();
             }
             spriteBatch.End();
 
