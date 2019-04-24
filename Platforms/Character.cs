@@ -46,6 +46,7 @@ namespace Platforms
         private bool Jumped = false;
         public bool landOnSpike { get; set; }
         public bool landOnIce { get; set; }
+        public bool landInBramble { get; set; }
         public static int score = 0;
 
         //initailize all the character data
@@ -123,8 +124,11 @@ namespace Platforms
             }
             if ( X < screenWidth - xVector)
             {
-                X += (float)xVector;
-                distance = (float)xVector;
+                if (!landInBramble)
+                {
+                    X += (float)xVector;
+                    distance = (float)xVector;
+                }
             }
             if (colTest(charRect, map))
             {
@@ -216,9 +220,14 @@ namespace Platforms
                             {
                                 landOnIce = true;
                             }
+                            if(t.platformType == 4 && yVector > 0)
+                            {
+                                landInBramble = true;
+                            }
                             else
                             {
                                 landOnIce = false;
+                                landInBramble = false;
                             }
                             if (count > 0)
                             {
@@ -230,6 +239,10 @@ namespace Platforms
                                 }
                             }
                             tileY = (int)t.Y;
+                            if(landInBramble)
+                            {
+                                tileY = (int)t.Y + 15;
+                            }
                             return true;
                         }
                     }
@@ -242,13 +255,17 @@ namespace Platforms
         //Alter the vector values when they are not in use so they return to their default states
         public void ResetVectorX()
         {
-            if(xVector > -.4 && xVector < .4)
+            if (landOnIce)
+            {
+                return;
+            }
+            else if (xVector > -.4 && xVector < .4)
             {
                 xVector = 0;
             }
-            else if(landOnIce)
+            else if(landInBramble)
             {
-                return;
+                xVector = .1;
             }
             else 
             {

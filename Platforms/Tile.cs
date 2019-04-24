@@ -47,6 +47,11 @@ namespace Platforms
                 platform = gameContent.IcyPad;
                 Width = 67;
             }
+            else if(platformType == 4)
+            {
+                platform = gameContent.BramblePad;
+                Width = 100;
+            }
             this.spriteBatch = spriteBatch;
             Height = 20;
             X = x;

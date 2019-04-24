@@ -27,6 +27,7 @@ namespace Platforms
         public Texture2D JumpTile { get; set; }
         public Texture2D SpikyPad { get; set; }
         public Texture2D IcyPad { get; set; }
+        public Texture2D BramblePad { get; set; }
         public SpriteFont labelFont { get; set; }
         public SoundEffect jumpSound { get; set; }
         public SoundEffect wallBounce { get; set; }
@@ -50,6 +51,7 @@ namespace Platforms
             JumpTile = Content.Load<Texture2D>("Pad1Sized");
             SpikyPad = Content.Load<Texture2D>("SpikyPad");
             IcyPad = Content.Load<Texture2D>("IcyPad");
+            BramblePad = Content.Load<Texture2D>("BramblePad");
         }
     }
 }

@@ -152,6 +152,10 @@ namespace Platforms
             for (int i = platformNumber; i < platformNumber + specPlatformNum; i++)
             {
                 int type = randGen.Next(2, 4);
+                if (levelNum >=3)
+                {
+                    type = randGen.Next(2, 5);
+                }
                 int offsetShift = randGen.Next(1, 4);
                 int platformPlace = randGen.Next(0, platformNumber);
                 int Y = 0;
@@ -164,11 +168,26 @@ namespace Platforms
                     X = level[platformPlace].X - xOffset;
                     Y = yOffset;
                 }
-                else
+                else if (type >= 3)
                 {
                     //Icy Platform creation
                     xOffset = 0;
                     yOffset = -70 * offsetShift;
+                    X = level[platformPlace].X - xOffset;
+                    if (level[platformPlace].Y < screenHeight / 2)
+                    {
+                        Y = (int)level[platformPlace].Y - yOffset;
+                    }
+                    else
+                    {
+                        Y = (int)level[platformPlace].Y + yOffset;
+                    }
+
+                }
+                else
+                {
+                    xOffset = 0;
+                    yOffset = -100 * offsetShift;
                     X = level[platformPlace].X - xOffset;
                     if (level[platformPlace].Y < screenHeight / 2)
                     {
