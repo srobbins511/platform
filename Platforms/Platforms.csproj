@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Button.cs" />
     <Compile Include="Character.cs" />
+    <Compile Include="ControlsList.cs" />
     <Compile Include="DrawMouse.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="Game1.cs" />

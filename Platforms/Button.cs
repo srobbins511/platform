@@ -105,6 +105,16 @@ namespace Platforms
                             clicked = true;
                             return true;
                         }
+                        else if (text.Equals("Controls"))
+                        {
+                            clicked = true;
+                            return true;
+                        }
+                        else if (text.Equals("Return"))
+                        {
+                            clicked = true;
+                            return true;
+                        }
                     }
                 }
                 prevMouseState = curMouseState;
@@ -123,16 +133,28 @@ namespace Platforms
             {
                 spriteBatch.Draw(this.Texture, new Vector2( Position.X-10 , Position.Y - 10), null, Color.Green, 0, new Vector2(0, 0), 2f, SpriteEffects.None, 0);
             }
-            else 
+            else if(text.Equals("Exit"))
+            {
+                spriteBatch.Draw(this.Texture, new Vector2(Position.X - 10, Position.Y - 10), null, Color.Red, 0, new Vector2(0, 0), 2f, SpriteEffects.None, 0);
+            }
+            else if (text.Equals("Controls"))
+            {
+                spriteBatch.Draw(this.Texture, new Vector2(Position.X - 10, Position.Y - 10), null, Color.Green, 0, new Vector2(0, 0), 2f, SpriteEffects.None, 0);
+            }
+            else if (text.Equals("Return"))
             {
                 spriteBatch.Draw(this.Texture, new Vector2(Position.X - 10, Position.Y - 10), null, Color.Red, 0, new Vector2(0, 0), 2f, SpriteEffects.None, 0);
             }
             spriteBatch.DrawString(spriteFont, text, Position, Color.Black);
-            if(!Game1.died)
+            if(!Game1.died && !Game1.ControlScreen && !Game1.Win)
             {
                 spriteBatch.DrawString(spriteFont, "Golem Jump", new Vector2(Game1.screenWidth / 2 - 60, Game1.screenWidth / 4), Color.Black);
             }
-            else
+            else if (Game1.Win)
+            {
+                spriteBatch.DrawString(spriteFont, "You Win", new Vector2(Game1.screenWidth / 2 - 60, Game1.screenWidth / 4), Color.Black);
+            }
+            else if(!Game1.ControlScreen)
             {
                 spriteBatch.DrawString(spriteFont, "Died", new Vector2(Game1.screenWidth / 2 - 60, Game1.screenWidth / 4), Color.Black);
             }

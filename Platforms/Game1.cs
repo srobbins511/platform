@@ -16,13 +16,18 @@ namespace Platforms
         private Floor floor;
         private Button startButton;
         private Button ContinueButton;
+        private Button ControlsButton;
+        private Button ReturnButton;
         private Button exitButton;
         private Vector2 startButtonPosition;
         private Vector2 exitButtonPosition;
         private DrawMouse mouse;
+        private ControlsList controlsList;
         private bool isPlaying = false;
         private bool isStarted = false;
         public bool died = false;
+        public bool Win = false;
+        public bool ControlScreen = false;
         private Level level;
         private Level level2;
         private Level level3;
@@ -90,7 +95,11 @@ namespace Platforms
             exitButtonPosition = new Vector2((screenWidth / 2 - 20) , (screenHeight / 10) * 6);
             startButton = new Button(this, spriteBatch, gameContent, "Start", screenHeight / 10, screenWidth / 5, startButtonPosition);
             ContinueButton = new Button(this, spriteBatch, gameContent, "Continue", screenHeight / 10, screenWidth / 5, startButtonPosition);
+            ControlsButton = new Button(this, spriteBatch, gameContent, "Controls", screenHeight / 10, screenWidth / 5, exitButtonPosition);
+            exitButtonPosition.Y += 100;
             exitButton = new Button(this, spriteBatch, gameContent, "Exit", screenHeight / 10, screenWidth / 5, exitButtonPosition);
+            exitButtonPosition.Y -= 50;
+            ReturnButton = new Button(this, spriteBatch, gameContent, "Return", screenHeight / 10, screenWidth / 5, exitButtonPosition);
             isPlaying = false;
             level = new Level(gameContent, spriteBatch, screenWidth, screenHeight, floor, 1);
             level2 = new Level(gameContent, spriteBatch, screenWidth, screenHeight, level, 2);
@@ -105,6 +114,7 @@ namespace Platforms
             levels[4] = level5;
             levCounter = new LevelCounter(gameContent, spriteBatch);
             mouse = new DrawMouse(spriteBatch, gameContent);
+            controlsList= new ControlsList(this, spriteBatch, gameContent);
         }
 
         /// <summary>
@@ -153,6 +163,11 @@ namespace Platforms
                 if (died)
                 {
                     isPlaying = false;
+                }
+                if (character.WinCounter >= 5)
+                {
+                    isPlaying = false;
+                    Win = true;
                 }
 
 
@@ -218,6 +233,14 @@ namespace Platforms
                 {
                     isPlaying = true;
                 }
+                else if(ControlsButton.Update(gameTime))
+                {
+                    ControlScreen = true;
+                }
+                else if (ReturnButton.Update(gameTime))
+                {
+                    ControlScreen = false;
+                }
                 else if(exitButton.Update(gameTime))
                 {
                     died = false;
@@ -254,10 +277,17 @@ namespace Platforms
                     }
                     character.Draw();
                 }
-                else if(!died)
+                else if(!died&&!ControlScreen&&!Win)
                 {
                     ContinueButton.Draw();
+                    ControlsButton.Draw();
                     exitButton.Draw();
+                    mouse.Draw();
+                }
+                else if(ControlScreen)
+                {
+                    controlsList.Draw();
+                    ReturnButton.Draw();
                     mouse.Draw();
                 }
                 else
@@ -267,9 +297,16 @@ namespace Platforms
                 }
                 levCounter.Draw();
             }
+            else if (ControlScreen)
+            {
+                controlsList.Draw();
+                ReturnButton.Draw();
+                mouse.Draw();
+            }
             else
             {
                 startButton.Draw();
+                ControlsButton.Draw();
                 exitButton.Draw();
                 mouse.Draw();
             }

@@ -24,6 +24,7 @@ namespace Platforms
         public float screenHeight;
         public bool stable { get; set; }
         public bool WinLevel { get; set; }
+        public int WinCounter = 0;
 
         private Texture2D body { get; set; }
 
@@ -189,6 +190,7 @@ namespace Platforms
                 {
                     if(resetFloor)
                     {
+                        WinCounter++;
                         WinLevel = true;
                         resetFloor = false;
                     }
