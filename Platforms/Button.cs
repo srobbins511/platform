@@ -148,7 +148,7 @@ namespace Platforms
             spriteBatch.DrawString(spriteFont, text, Position, Color.Black);
             if(!Game1.died && !Game1.ControlScreen && !Game1.Win)
             {
-                spriteBatch.DrawString(spriteFont, "Golem Jump", new Vector2(Game1.screenWidth / 2 - 60, Game1.screenWidth / 4), Color.Black);
+                spriteBatch.DrawString(spriteFont, "Super Golem Bro's", new Vector2(Game1.screenWidth / 2 - 60, Game1.screenWidth / 4), Color.Black);
             }
             else if (Game1.Win)
             {

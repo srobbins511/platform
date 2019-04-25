@@ -215,17 +215,37 @@ namespace Platforms
                 }
 
                 //the logic to cause the screen to passively scroll
-                foreach (Land l in floor.floor)
+                if(character.X > screenWidth/2)
                 {
-                    l.X = l.X - 1;
-                    l.rect = new Rectangle((int)l.X, (int)l.Y, (int)l.Width, (int)l.Height);
-                }
-                foreach (Level l in levels)
-                {
-                    foreach (Tile t in l.level)
+                    foreach (Land l in floor.floor)
                     {
-                        t.X = t.X - 1;
-                        t.rect = new Rectangle((int)t.X, (int)t.Y, (int)t.Width, (int)t.Height);
+                        l.X = l.X - 3;
+                        l.rect = new Rectangle((int)l.X, (int)l.Y, (int)l.Width, (int)l.Height);
+                    }
+                    foreach (Level l in levels)
+                    {
+                        foreach (Tile t in l.level)
+                        {
+                            t.X = t.X - 3;
+                            t.rect = new Rectangle((int)t.X, (int)t.Y, (int)t.Width, (int)t.Height);
+                        }
+                    }
+                    character.X -= 3;
+                }
+                else
+                {
+                    foreach (Land l in floor.floor)
+                    {
+                        l.X = l.X - 1;
+                        l.rect = new Rectangle((int)l.X, (int)l.Y, (int)l.Width, (int)l.Height);
+                    }
+                    foreach (Level l in levels)
+                    {
+                        foreach (Tile t in l.level)
+                        {
+                            t.X = t.X - 1;
+                            t.rect = new Rectangle((int)t.X, (int)t.Y, (int)t.Width, (int)t.Height);
+                        }
                     }
                 }
                 //the logic to cause the floor to move to its next position when character starts the next level
