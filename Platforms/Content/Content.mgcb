@@ -68,6 +68,12 @@
 /processorParam:TextureFormat=Color
 /build:ButtonTexture.png
 
+#begin death.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:death.wav
+
 #begin Face1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -127,6 +133,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:IcyPad.png
+
+#begin jump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:jump.wav
 
 #begin LeftArm.png
 /importer:TextureImporter
@@ -259,4 +271,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sword.png
+
+#begin win.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:win.wav
 
