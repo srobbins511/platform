@@ -93,8 +93,8 @@ namespace Platforms
             character = new Character(gameContent, spriteBatch, charX, charY, screenWidth, screenHeight);
             floor = new Floor(gameContent, spriteBatch, screenWidth, screenHeight);
             //create all the buttons needed for the game and place them
-            startButtonPosition = new Vector2((screenWidth / 2 - 20), (screenHeight / 10) * 5);
-            exitButtonPosition = new Vector2((screenWidth / 2 - 20) , (screenHeight / 10) * 6);
+            startButtonPosition = new Vector2((screenWidth / 2 - 40), (screenHeight / 10) * 5);
+            exitButtonPosition = new Vector2((screenWidth / 2 - 40) , (screenHeight / 10) * 6);
             startButton = new Button(this, spriteBatch, gameContent, "Start", screenHeight / 10, screenWidth / 5, startButtonPosition);
             ContinueButton = new Button(this, spriteBatch, gameContent, "Continue", screenHeight / 10, screenWidth / 5, startButtonPosition);
             ControlsButton = new Button(this, spriteBatch, gameContent, "Controls", screenHeight / 10, screenWidth / 5, exitButtonPosition);

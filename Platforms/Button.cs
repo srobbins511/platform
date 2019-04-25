@@ -156,7 +156,7 @@ namespace Platforms
             }
             else if(!Game1.ControlScreen)
             {
-                spriteBatch.DrawString(spriteFont, "Died", new Vector2(Game1.screenWidth / 2 - 60, Game1.screenWidth / 4), Color.Black);
+                spriteBatch.DrawString(spriteFont, "You Died", new Vector2(Game1.screenWidth / 2 - 60, Game1.screenWidth / 4), Color.Black);
             }
             
 
