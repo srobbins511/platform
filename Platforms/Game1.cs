@@ -165,7 +165,7 @@ namespace Platforms
                 if (character.WinLevel)//check to see if character has completed the current level
                 {
                     levels[Level.curLevel].visible = false;
-                    if(Level.curLevel<5)
+                    if(Level.curLevel<4)
                     {
                         levels[Level.curLevel + 1].visible = true;
                     }
