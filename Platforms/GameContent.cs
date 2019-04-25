@@ -31,9 +31,9 @@ namespace Platforms
         public Texture2D ButtonTexture { get; set; }
         public Texture2D MouseTexture { get; set; }
         public SpriteFont labelFont { get; set; }
-        public SoundEffect jumpSound { get; set; }
-        public SoundEffect wallBounce { get; set; }
-        public SoundEffect deathSound { get; set; }
+        public static SoundEffect JumpSound { get; set; }
+        public static SoundEffect WinSound { get; set; }
+        public static SoundEffect DeathSound { get; set; }
 
         public GameContent(ContentManager Content)
         {
@@ -56,6 +56,9 @@ namespace Platforms
             BramblePad = Content.Load<Texture2D>("BramblePad");
             ButtonTexture = Content.Load<Texture2D>("ButtonTexture");
             MouseTexture = Content.Load<Texture2D>("MouseTexture");
+            JumpSound = Content.Load<SoundEffect>("jump");
+            WinSound = Content.Load<SoundEffect>("win");
+            DeathSound = Content.Load<SoundEffect>("death");
         }
     }
 }

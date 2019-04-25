@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Platforms
 {
@@ -172,10 +173,12 @@ namespace Platforms
                 }
                 if (died)//check to see if character has died in some way
                 {
+                    PlaySound(GameContent.DeathSound);
                     isPlaying = false;
                 }
                 if (character.WinCounter >= 5)//check to see if character has completed all levels and won the game
                 {
+                    PlaySound(GameContent.WinSound);
                     isPlaying = false;
                     Win = true;
                 }
@@ -348,6 +351,14 @@ namespace Platforms
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public static void PlaySound(SoundEffect sound)
+        {
+            float volume = 1;
+            float pitch = 0.0f;
+            float pan = 0.0f;
+            sound.Play(volume, pitch, pan);
         }
     }
 }
