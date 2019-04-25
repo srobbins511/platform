@@ -164,7 +164,10 @@ namespace Platforms
                 if (character.WinLevel)//check to see if character has completed the current level
                 {
                     levels[Level.curLevel].visible = false;
-                    levels[Level.curLevel + 1].visible = true;
+                    if(Level.curLevel<5)
+                    {
+                        levels[Level.curLevel + 1].visible = true;
+                    }
                     //Exit();
                 }
                 if (died)//check to see if character has died in some way
