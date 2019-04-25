@@ -48,6 +48,7 @@ namespace Platforms
         public bool landOnSpike { get; set; }
         public bool landOnIce { get; set; }
         public bool landInBramble { get; set; }
+        public bool FacingLeft { get; set; }
         public static int score = 0;
 
         //initailize all the character data
@@ -70,6 +71,7 @@ namespace Platforms
             Height = 55;
             landOnIce = false;
             landOnSpike = false;
+            FacingLeft = false;
             this.screenWidth= screenWidth;
             this.screenHeight = screenHeight;
 
@@ -86,15 +88,30 @@ namespace Platforms
         //Draw the Character to the screen
         public void Draw()
         {
-            spriteBatch.Draw(leftArm, new Vector2(X + 27, Y + 39), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(leftHand, new Vector2(X + 27, Y + 45), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(leftLeg, new Vector2(X + 23, Y + 51), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(rightLeg, new Vector2(X + 17, Y + 51), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(body, new Vector2(X + 8, Y + 32), null, Color.White, 0, new Vector2(0,0), .1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(rightArm, new Vector2(X + 11, Y + 39), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(rightHand, new Vector2(X + 11, Y + 45), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(head, new Vector2(X, Y), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(face1, new Vector2(X+13, Y+19), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+            if(!FacingLeft)
+            {
+                spriteBatch.Draw(leftArm, new Vector2(X + 27, Y + 39), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+                spriteBatch.Draw(leftHand, new Vector2(X + 27, Y + 45), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+                spriteBatch.Draw(leftLeg, new Vector2(X + 23, Y + 51), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+                spriteBatch.Draw(rightLeg, new Vector2(X + 17, Y + 51), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+                spriteBatch.Draw(body, new Vector2(X + 8, Y + 32), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+                spriteBatch.Draw(rightArm, new Vector2(X + 11, Y + 39), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+                spriteBatch.Draw(rightHand, new Vector2(X + 11, Y + 45), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+                spriteBatch.Draw(head, new Vector2(X, Y), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+                spriteBatch.Draw(face1, new Vector2(X + 13, Y + 19), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.None, 0);
+            }
+            else
+            {
+                spriteBatch.Draw(leftArm, new Vector2(X + 27, Y + 39), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(leftHand, new Vector2(X + 27, Y + 45), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(leftLeg, new Vector2(X + 23, Y + 51), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(rightLeg, new Vector2(X + 17, Y + 51), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(body, new Vector2(X + 8, Y + 32), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(rightArm, new Vector2(X + 11, Y + 39), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(rightHand, new Vector2(X + 11, Y + 45), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(head, new Vector2(X, Y), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(face1, new Vector2(X + 4, Y + 19), null, Color.White, 0, new Vector2(0, 0), .1f, SpriteEffects.FlipHorizontally, 0);
+            }
         }
 
         //change the xVector value to initiate movement and determine speed for leftward movement
@@ -163,6 +180,7 @@ namespace Platforms
             }
             if(prevX < X)
             {
+                
                 score+= 1 * (Level.curLevel + 1);
                 foreach (Land l in floor.floor)
                 {
@@ -177,6 +195,14 @@ namespace Platforms
                         t.rect = new Rectangle((int)t.X, (int)t.Y, (int)t.Width, (int)t.Height);
                     }
                 }
+            }
+            if(prevX<=X)
+            {
+                FacingLeft = false;
+            }
+            else if (prevX>= X)
+            {
+                FacingLeft = true;
             }
            
         }
